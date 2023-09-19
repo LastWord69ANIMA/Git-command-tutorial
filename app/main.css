@@ -1,0 +1,161 @@
+.header {
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
+
+.body {
+    background-color: #999;
+}
+
+/* 以下、入力フォームを出すタブ関連*/
+.styled-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    outline: none;
+}
+
+.styled-button:hover {
+    background-color: #004db1;
+}
+
+
+#inputForm {
+    display: none;
+}
+
+.filelabel{
+    position: relative;
+    background-color: #ff5722;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.5s;
+}
+.filelabel:hover{
+    background-color: #004db1;
+}
+  
+.fileinput{
+    display: none;
+}
+
+.size-image {
+    max-width: 100%;
+    height: auto;  
+}
+
+
+.below-box {
+    position: fixed;
+    bottom: 90px;
+    width: 100%;
+    background-color: rgba(245, 245, 245, 0.1);
+    border-top: 1px solid #ccc;
+    padding: 1px;
+}
+
+.textarea {
+    padding: 10px;
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 1.5;
+    height: 100px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
+    color:red;
+    resize: none;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: row;
+}
+.form-container form > * {
+  margin-right: 10px;
+}
+
+
+#name{
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
+    
+}
+
+.form-container .pass{
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
+    
+}
+
+
+.label {
+      display: block;
+      margin-bottom: 10px;
+}
+
+input[type="text"] {
+  
+  color:red;
+}
+input[type="file"] {
+  
+}
+input[type="password"] {
+  
+  color:red;
+}
+input[type="number"] {
+  
+  color:red;
+}
+input[type="submit"] {
+
+}
+
+.btn_passview {
+    font-size: 18px; /* ボタンのテキストのフォントサイズを設定 */
+    padding: 10px 20px; /* ボタンの内側の余白を設定 (上下に10px, 左右に20px) */
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-item {
+    margin-right: 10px;
+}
+
+
+@media screen and (max-width: 900px) {
+    /* 画面幅が900pxだと送信ボタンが表示されない。 */
+    .below-box {
+        bottom: 30px; 
+    }
+}
+
+
+footer {
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 10px;
+}
+  
