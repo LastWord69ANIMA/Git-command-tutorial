@@ -1,6 +1,6 @@
 <?php
 // DB接続設定
-$dsn = 'mysql:dbname=*****;host=localhost';
+$dsn = 'mysql:dbname=******;host=localhost';
 $user = '*****';
 $password = '*****';
 $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
@@ -86,13 +86,14 @@ elseif(!empty($_POST["delete"]) && !empty($_POST["del_pass"])){
     $delete = $_POST["delete"];
     $del_pass = $_POST["del_pass"];
     
-    //以下、passがあっていれば実行
+    //以下、id,del_passとdelete,passの確認
     $sql = 'SELECT * FROM MainTable WHERE id=:id';
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id', $delete, PDO::PARAM_INT);
     $stmt->execute();
     $row = $stmt->fetch();
     
+    //passがあっていれば実行
     if($row && password_verify($del_pass, $row['password'])){
         $sql = 'DELETE FROM MainTable WHERE id=:id';
         $stmt = $pdo->prepare($sql);
@@ -108,17 +109,20 @@ elseif(!empty( $_POST["edit"] )&& !empty( $_POST["edit_pass"] ) ){
     
     $edit = $_POST["edit"];
     $edit_pass = $_POST["edit_pass"];
-
-
-    //以下、passがあっていれば実行
+    
+echo 1;
+    
+    //以下、passとedit、passwordとidの確認
     $sql = 'SELECT * FROM MainTable';
     $stmt = $pdo->query($sql);
     $results = $stmt->fetchAll();
     foreach ($results as $row){
-    
-        //編集対象番号と入力した番号が同じ場合、その番号行を取得
-        if($row['password'] == $_POST["edit_pass"]){
-    
+
+        
+        //passがあっていれば実行
+        if($row && password_verify($edit_pass, $row['password'])){
+
+            //編集対象番号と入力した番号が同じ場合、その番号行を取得
             if ($row['id'] == $_POST["edit"]) {
                 $edit_num = $row['id'];
                 $edit_name = $row['name'];
@@ -154,11 +158,7 @@ if( !empty( $_POST["edit_num"] )&& !empty( $_POST["edit_name"] )&& !empty( $_POS
     $stmt->execute();
 
 }
-if (!empty($_POST["name"]) || !empty($_POST["comment"]) || !empty($_POST["pass"]) 
-    || !empty($_POST["delete"]) || !empty($_POST["del_pass"])
-    || !empty($_POST["edit"]) || !empty($_POST["edit_pass"])) {
-    echo '入力エラーです。';
-}
+
 
 //以下、投稿データの表示
     $sql = "SELECT * FROM MainTable";
@@ -198,198 +198,131 @@ echo '</div>';
 
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href='main.css' >
 
-<style>
-.filelabel{
-    position: relative;
-    background-color: #ff5722;
+    <style>
+    .styled-button {
+    background-color: #007bff;
     color: #fff;
-    font-size: 16px;
+    border: none;
+    border-radius: 5px;
     padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.5s;
-    opacity:0.5;
-}
-.filelabel:hover{
-    background-color: #004db1;
-}
-  
-.fileinput{
-    display: none;
-}
-  
-.size-image {
-    max-width: 100%;
-    height: auto;  
-}
-
-
-.below-box {
-    position: fixed;
-    bottom: 90px;
-    width: 100%;
-    background-color: rgba(245, 245, 245, 0.1);
-    border-top: 1px solid #ccc;
-    padding: 1px;
-}
-
-@media screen and (max-width: 900px) {
-    /* 画面幅が900pxだと送信ボタンが表示されない。 */
-    .below-box {
-        bottom: 30px; 
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    outline: none;
     }
-}
-
-body {
-    background-color: #999;
-}
-  
- 
-textarea {
-    padding: 10px;
-    max-width: 100%;
-    font-size: 10px;
-    line-height: 1.5;
-    height: 100px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px #999;
-    opacity:0.5;
-    color:red;
-    resize: none;
-}
-
-.form-container form {
-  display: flex;
-  flex-direction: row;
-}
-.form-container form > * {
-  margin-right: 10px;
-}
-
-
-#name{
-    padding: 10px;
-    max-width: 100%;
-    line-height: 1.5;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px #999;
     
-}
+    .styled-button:hover {
+        background-color: #004db1;
+    }
+    
+    .btn_passview {
+    font-size: 18px; /* ボタンのテキストのフォントサイズを設定 */
+    padding: 10px 20px; /* ボタンの内側の余白を設定 (上下に10px, 左右に20px) */
+    }
+    .form-row {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .form-item {
+        margin-right: 10px;
+    }
+    
+    .pass{
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
+    }
+    </style>
 
-label {
-      display: block;
-      margin-bottom: 10px;
-}
-
-footer {
-  background-color: #f0f0f0;
-  text-align: center;
-  padding: 10px;
-}
-
-input[type="text"] {
-  opacity: 0.4;
-  color:red;
-}
-input[type="file"] {
-  opacity: 0.4;
-}
-input[type="password"] {
-  opacity: 0.4;
-  color:red;
-}
-input[type="number"] {
-  opacity: 0.4;
-  color:red;
-}
-input[type="submit"] {
-  opacity: 0.4;
-}
-  
-</style>
 
     <title>Mission_6-1</title>
 </head>
+
+
 <body>
-<div class="split-box below-box">
+<button id="showFormButton" class="styled-button" onclick="showInputForm()">新規投稿</button>
+<button id="deleteButton" class="styled-button" onclick="showDeleteForm()">削除</button>
+<button id="editButton" class="styled-button" onclick="showEditForm()">編集</button>
 
 
-
-    <div class="form-container">
+<!-- 入力フォームの内容 -->
+<div class="form-container" id="inputForm" style="display: none;">
     <form action="" method="post" enctype="multipart/form-data">
-    <div>
-    <input id="name" type="text" name="name" placeholder="名前"  required><br>
-    
-    <textarea id="cooment"　type="text" name="comment" placeholder="コメント(必須)" required autocorrect="on" wrap="hard" cols="40" row="100"></textarea><br><br> 
-    </div>
-    <label for="image" class="filelabel">画像ファイル選択</label>
-    <input type="file" name="image" id="image" class="fileinput"><br><br> 
-    
-    <label for="audio" class="filelabel">音声ファイル選択</label>
-    <input type="file" name="audio" id="audio" class="fileinput"><br><br>  
-    
-    <div>
-    <input type="password" name="pass" placeholder="ログイン時のパスワード" class="pass"><br><br>
-    <input type="submit" name="submit" class="btn_passview" onclick="togglePassword()"　onsubmit="showConfirmation()">
-    </form>
-    </div>
-
-
-    
-    <form action="" method="post">    
-        <input type="number" name="delete"  placeholder="削除対象番号" size="7"><br>
-    <div>
-        <input type="text" name="del_pass" placeholder="パスワード:必須" class="pass"><br><br>
-    <input type="submit" name="submit" class="btn_passview" onclick="togglePassword()">
-    </form>
-    </div>
-
-
-    
-    <form method="post" action="">
-        <input type="number" name="edit" placeholder="編集対象番号" size="7"><br>
-    <div>
-        <input type="text" name="edit_pass" placeholder="パスワード:必須" class="pass"><br><br>
-        <input type="submit" name="submit" class="btn_passview" onclick="togglePassword()">
-    </form>
-    </div>
-
-
-    
-    <form method="post" action="">
-        <?php if (isset($edit_num)) { echo '<input type="number" name="edit_num" value="'.$edit_num.' ">'; } ?><br>
-        <?php if (isset($edit_name)) { echo '<input type="text" name="edit_name" value="'.$edit_name.'">'; } ?><br>
-        <?php if (isset($edit_comment)) { echo '<textarea type="text" name="edit_comment" value="'.$edit_comment.'"></textarea>'; } ?><br>
-        <br>
-        <?php if (isset($edit_num)) { echo '<input type="submit" name="submit">'; } ?>
         <div>
-    </form> 
+            <input id="name" type="text" name="name" placeholder="名前"  required><br>
+    
+            <textarea id="cooment"　type="text" name="comment" placeholder="コメント(必須)" required autocorrect="on" wrap="hard" cols="40" row="100"></textarea><br><br> 
+        </div>
+        <label for="image" class="filelabel">画像ファイル選択</label>
+        <input type="file" name="image" id="image" class="fileinput"><br><br> 
+    
+        <label for="audio" class="filelabel">音声ファイル選択</label>
+        <input type="file" name="audio" id="audio" class="fileinput"><br><br>  
+    
+        <div>
+            <input  class="pass" type="password" name="pass" placeholder="ログイン時のパスワード"><br><br>
+            <input  class="btn_passview" type="submit" name="submit" onclick="togglePassword()"　onsubmit="showConfirmation()">
+    
+        </div>
+    </form>
+</div>
+
+
+    <!-- 削除フォームの内容 -->
+        <div class="form-container" id="deleteForm" style="display: none;">
+            <form action="" method="post">
+                <input type="number" name="delete"  placeholder="削除対象番号" size="7"><br>
+                <div>
+                    <input class="pass" type="password" name="del_pass" placeholder="パスワード:必須"><br><br>
+                    <input class="btn_passview" type="submit" name="submit"  onclick="togglePassword()">
+                </div>
+            </form>
         </div>
 
 
 
+    <!-- 編集フォームの内容 -->
+        <div class="form-container" id="editForm" style="display: none;">
+            <form method="post" action="">
+                <input type="number" name="edit" placeholder="編集対象番号" size="7"><br>
+                <div>
+                    <input  class="pass" type="password" name="edit_pass" placeholder="パスワード:必須"><br><br>
+                    <input  class="btn_passview" type="submit" name="submit" onclick="togglePassword()">
+                </div>
+            </form>
+        </div>
+
+
     
-</div>
-</div>
+    <form method="post" action="">
+        <div class="form-row">
+        <?php if (isset($edit_num)) { echo '<div class="form-item"><input type="number" name="edit_num" value="'.$edit_num.' "></div>'; } ?>
+        <?php if (isset($edit_name)) { echo '<div class="form-item"><input type="text" name="edit_name" value="'.$edit_name.'"></div>'; } ?>
+        <?php if (isset($edit_comment)) { echo '<div class="form-item"><textarea name="edit_comment">'.$edit_comment.'</textarea></div>'; } ?>
+        <?php if (isset($edit_num)) { echo '<div class="form-item"><input type="submit" name="submit"></div>'; } ?>
+        </div>
+    </form> 
+        
 
 
+<script src='main.js'></script>
 
 
-    <script src='main.js'>
-        function showConfirmation() {
-    alert("※画像・音声を投稿する際、コメントも付記して下さい。\n※画像・音声を投稿する際、利用規約にご留意ください。");
-}
-    </script>
     
     <footer>
     <button onclick="location.href='main.php'">スレッド作成へ</button>
@@ -399,4 +332,3 @@ input[type="submit"] {
         
 </body>
 </html>
-

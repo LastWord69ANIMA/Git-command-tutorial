@@ -1,5 +1,4 @@
 <?php
-// DB接続設定
 $dsn = 'mysql:dbname=*****;host=localhost';
 $user = '*****';
 $password = '*****';
