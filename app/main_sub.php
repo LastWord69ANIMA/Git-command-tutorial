@@ -27,6 +27,7 @@ if (isset($_POST['site_name'])) {
             $indexContent = str_replace("main.js", '../../main.js', $indexContent);
             $indexContent = str_replace('main.php', '../../main.php', $indexContent);
             $indexContent = str_replace('main_sub.php', '../../main_sub.php', $indexContent);
+            $indexContent = str_replace('welcom_site/welcom_site.php', '../../welcom_site/welcom_site.php', $indexContent);
             file_put_contents($indexFile, $indexContent);
         }
     }
